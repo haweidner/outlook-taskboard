@@ -1,6 +1,6 @@
 'use strict';
 
-var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'ui.sortable']);
+var tbApp = angular.module('taskboardApp', ['taskboardApp.config', 'as.sortable']);
 
 try {
     // check whether the page is opened in outlook app
@@ -57,6 +57,15 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
 
         // ui-sortable options and events
         $scope.sortableOptions = {
+
+            itemMoved: function (event) {
+                event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
+                alert('item moved');
+            },
+            orderChanged: function (event) {
+                alert('order changed');
+            },
+
             connectWith: '.tasklist',
             items: 'li',
             opacity: 0.5,
@@ -105,16 +114,16 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
 
 
                 var taskitem = outlookNS.GetItemFromID(ui.item.sortable.model.entryID);
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
+                alert(taskitem.Subject + "/" + taskStatus(taskitem.Status));
 
                 // set new status, if different
                 if (taskitem.Status != newstatus) {
                     alert("1a " + taskitem.EntryID);
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
+                    alert(taskitem.Subject + "/" + taskStatus(taskitem.Status));
                     taskitem.Status = newstatus;
                     ui.item.sortable.model.status = taskStatus(newstatus);
                     taskitem.Save();
-                    alert(taskitem.Subject + "/" + taskStatus( taskitem.Status));
+                    alert(taskitem.Subject + "/" + taskStatus(taskitem.Status));
                 }
 
                 // ensure the task is not moving into same folder
