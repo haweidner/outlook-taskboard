@@ -57,10 +57,10 @@ tbApp.controller('taskboardController', function ($scope, CONFIG) {
 
         // ui-sortable options and events
         $scope.sortableOptions = {
-
             itemMoved: function (event) {
-                event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.column.name;
-                alert('item moved');
+                alert(stringify(event));
+                alert('item moved to ' + event.dest.sortableScope.$parent.id);
+                // event.source.itemScope.modelValue.status = event.dest.sortableScope.$parent.id;
             },
             orderChanged: function (event) {
                 alert('order changed');
